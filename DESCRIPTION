@@ -1,0 +1,16 @@
+Package: jackstraw
+Type: Package
+Title: Non-parametric Jackstraw for Principal Component Analysis
+Version: 1.0
+Date: 2013-01-28
+Author: Neo Christopher Chung <nc@princeton.edu>
+Maintainer: Neo Christopher Chung <nc@princeton.edu>
+Depends: corpcor
+Description: Significance test for association between variables and their
+    estimated latent variables
+License: GPL-2
+Collate: 'generic.R' 'jackstraw.R' 'permutationPA.R'
+Packaged: 2014-01-31 02:30:55 UTC; chchung
+NeedsCompilation: no
+Repository: CRAN
+Date/Publication: 2014-01-31 08:24:22

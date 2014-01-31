@@ -1,0 +1,3 @@
+export(jackstraw)
+export(permutationPA)
+importFrom(corpcor,fast.svd)
