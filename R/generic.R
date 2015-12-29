@@ -1,34 +1,28 @@
-fstat.adjust = function(dat, LV, ALV, decomposition, ext.covariate, n) {
-	# Calculate F-statistics and parametric significance when there exists ALV
-	
-	if(is.null(ext.covariate)) {
-		model.alt = model.matrix(seq(n) ~ decomposition$v[,LV] + decomposition$v[,ALV])
-		model.null = model.matrix(seq(n) ~ decomposition$v[,ALV])
-	}
-	if(!is.null(ext.covariate)) {
-		model.alt = model.matrix(seq(n) ~ decomposition$v[,LV] + decomposition$v[,ALV] + ext.covariate[,-1])
-		model.null = model.matrix(seq(n) ~ decomposition$v[,ALV] + ext.covariate[,-1])
-	}
-	
-	RSS.alt = RSS(dat, model.alt)
-	RSS.null = RSS(dat, model.null)
-	
-	fstat = (RSS.null - RSS.alt)/(ncol(model.alt)-ncol(model.null)) / (RSS.alt/(n-ncol(model.alt)))
-	fstat.pval = 1-pf(fstat, ncol(model.alt)-ncol(model.null), n-ncol(model.alt))
-	
-	return(list(fstat=fstat, p.value=fstat.pval))
-}
-
-fstat = function(dat, LV, decomposition, ext.covariate, n) {
+FSTAT = function(dat, LV, ALV=NULL, covariate=NULL) {
 	# Calculate F-statistics and parametric significance
+  	m = dim(dat)[1]
+  	n = dim(dat)[2]
 
-	if(is.null(ext.covariate)) {
-		model.alt = model.matrix(seq(n) ~ decomposition$v[,LV])
-		model.null = model.matrix(seq(n) ~ 1)
-	}
-	if(!is.null(ext.covariate)) {
-		model.alt = model.matrix(seq(n) ~ decomposition$v[,LV] + ext.covariate[,-1])
-		model.null = model.matrix(seq(n) ~ ext.covariate[,-1])
+  	if(is.null(ALV)) {
+		if(is.null(covariate)) {
+			model.alt = model.matrix(seq(n) ~ LV)
+			model.null = model.matrix(seq(n) ~ 1)
+		}
+		if(!is.null(covariate)) {
+			model.alt = model.matrix(seq(n) ~ LV + covariate)
+			model.null = model.matrix(seq(n) ~ 1 + covariate)
+		}
+	} else if(is.matrix(ALV) || is.vector(ALV)) {
+		if(is.null(covariate)) {
+			model.alt = model.matrix(seq(n) ~ LV + ALV)
+			model.null = model.matrix(seq(n) ~ 1 + ALV)
+		}
+		if(!is.null(covariate)) {
+			model.alt = model.matrix(seq(n) ~ LV + ALV + covariate)
+			model.null = model.matrix(seq(n) ~ 1 + ALV + covariate)
+		}
+	} else {
+		stop("Invalid arguments into a function \'fstat\'. Adjustment latent variable must be either a matrix (n rows) or a vector (size n)")
 	}
 	
 	RSS.alt = RSS(dat, model.alt)

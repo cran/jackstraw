@@ -1,7 +1,7 @@
 #' Permutation Parallel Analysis
 #'
 #' Estimate a number of significant principal components from a permutation test.
-#' 
+#'
 #' Adopted from sva::num.sv, and based on Buja and Eyuboglu (1992)
 #'
 #' @param dat a data matrix with \code{m} rows as variables and \code{n} columns as observations.
@@ -16,14 +16,13 @@
 #'
 #' @references Buja A and Eyuboglu N. (1992) Remarks on parrallel analysis. Multivariate Behavioral Research, 27(4), 509-540
 #' @export permutationPA
-#'
 permutationPA = function (dat, B = 100, threshold = 0.05, verbose=TRUE, seed = NULL) {
   if (!is.null(seed)) set.seed(seed)
   n <- ncol(dat)
   m <- nrow(dat)
 
   uu <- fast.svd(dat, tol = 0)
-  ndf <- n - 10 #for centering rows
+  ndf <- n - 1
   dstat <- uu$d[1:ndf]^2/sum(uu$d[1:ndf]^2)
   dstat0 <- matrix(0, nrow = B, ncol = ndf)
   if(verbose==TRUE) message("Estimating a number of significant principal component: ")
