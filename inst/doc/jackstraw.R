@@ -30,7 +30,7 @@ plot(svd.out$d^2/sum(svd.out$d^2), pch=20, main="The scree plot", xlab="PC", yla
 plot(svd.out$d[1] * svd.out$v[,1], pch=20, main="1st PC", xlab="Observation", ylab="Magnitude")
 
 ## ----sim_pca_jackstraw, dependson="sim_pca_data", cache=TRUE----
-js.pca = jackstraw(Y, r = 1, method = "PCA", s = 100, B = 100, verbose = FALSE)
+js.pca = jackstraw_pca(Y, r = 1, s = 100, B = 100, verbose = FALSE)
 
 hist(js.pca$p.value, 10, col="black")
 
@@ -61,7 +61,8 @@ dim(dat$Y)
 dat$Y[1:5,1:5]
 
 ## ----sim_lfa_jackstraw, dependson="sim_lfa_data", cache=TRUE----
-js.lfa = jackstraw(dat$Y, r = 2, method = "LFA-R", s = 200, B = 10)
+js.lfa = jackstraw_lfa(dat$Y, r = 2, FUN = function(x) lfa.corpcor(x, 2)[, , drop = FALSE], s = 200, B = 10, devR = TRUE)
+
 
 hist(js.lfa$p.value, 10, col="black")
 
