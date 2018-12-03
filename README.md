@@ -4,7 +4,10 @@ This **R** package performs association tests between the observed data and thei
 
 Using a variety of unsupervised learning techniques, the jackstraw provides a resampling strategy and testing scheme to estimate statistical significance of association between the observed data and their systematic patterns of variation. For example, the cell cycle in microarray data may be estimated by principal components (PCs); then, we can use the jackstraw for PCA to identify genes that are significantly associated with these PCs. On the other hand, cell identities in single cell RNA-seq data are identified by K-means clustering; then, the jackstraw for clustering can evaluate reliability of computationally determined cell identities.
 
-The jackstraw tests enable us to identify the data features (i.e., variables or observations) that are driving systematic variation, in an unsupervised manner. Using **jackstraw_pca**, we can find statistically significant features with regard to the top r principal components. Alternatively, **jackstraw_kmeans** can identify the data features that are statistically significant members of the data-dependent clusters. Furthermore, this package includes more general algorithms such as **jackstraw_subspace** for the dimension reduction techniques and **jackstraw_cluster** for the clustering algorithms.
+The jackstraw tests enable us to identify the variables (or observations) that are driving systematic variation, in an unsupervised manner. Using **jackstraw_pca**, we can find statistically significant variables with regard to the top r principal components. Alternatively, **jackstraw_kmeans** can identify the variables that are statistically significant members of clusters. There are many functions to support statistical inference for unsupervised learning, such as finding a number of PCs or clusters and estimating posterior probabilities from jackstraw p-values. Furthermore, this package includes more general and experimental algorithms such as **jackstraw_subspace** for the dimension reduction techniques and **jackstraw_cluster** for the clustering algorithms.
+
+*Chung, N.C.* (2018) Statistical significance of cluster membership for determination of cell identities in single cell genomics. Biorxiv, 10.1101/248633
+https://www.biorxiv.org/content/early/2018/08/07/248633
 
 *Chung, N.C.* and *Storey, J.D.* (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554
 http://bioinformatics.oxfordjournals.org/content/31/4/545
@@ -22,3 +25,18 @@ install.packages("devtools")
 library("devtools")
 install_github("ncchung/jackstraw")
 ```
+
+#### Troubleshooting
+Some of dependencies may fail to automatically install, particularlay [lfa](https://bioconductor.org/packages/release/bioc/html/lfa.html) and [qvalue](https://bioconductor.org/packages/release/bioc/html/qvalue.html) from Bioconductor. This would result in a warning similar to:
+```R
+Error: package or namespace load failed for ‘jackstraw’ in loadNamespace(j <- i[[1L]], c(lib.loc, .libPaths()), versionCheck = vI[[j]]):
+ there is no package called ‘lfa’
+```
+
+Then, please install these two packages manually using the following command:
+```R
+source("https://bioconductor.org/biocLite.R")
+biocLite(c('lfa', 'qvalue'))
+```
+
+Thanks to [idc9](https://github.com/idc9) for raising [this issue](https://github.com/ncchung/jackstraw/issues/2).

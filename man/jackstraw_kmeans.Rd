@@ -4,8 +4,8 @@
 \alias{jackstraw_kmeans}
 \title{Non-Parametric Jackstraw for K-means Clustering}
 \usage{
-jackstraw_kmeans(dat, kmeans.dat, s = NULL, B = NULL, covariate = NULL,
-  verbose = FALSE, pool = TRUE, seed = NULL, ...)
+jackstraw_kmeans(dat, kmeans.dat, s = NULL, B = NULL, center = TRUE,
+  covariate = NULL, verbose = FALSE, pool = TRUE, seed = NULL, ...)
 }
 \arguments{
 \item{dat}{a matrix with \code{m} rows as variables and \code{n} columns as observations.}
@@ -15,6 +15,8 @@ jackstraw_kmeans(dat, kmeans.dat, s = NULL, B = NULL, covariate = NULL,
 \item{s}{a number of ``synthetic'' null variables. Out of \code{m} variables, \code{s} variables are independently permuted.}
 
 \item{B}{a number of resampling iterations.}
+
+\item{center}{a logical specifying to center the rows. By default, \code{TRUE}.}
 
 \item{covariate}{a model matrix of covariates with \code{n} observations. Must include an intercept in the first column.}
 
