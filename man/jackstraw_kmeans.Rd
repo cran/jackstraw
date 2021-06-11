@@ -4,8 +4,18 @@
 \alias{jackstraw_kmeans}
 \title{Non-Parametric Jackstraw for K-means Clustering}
 \usage{
-jackstraw_kmeans(dat, kmeans.dat, s = NULL, B = NULL, center = TRUE,
-  covariate = NULL, verbose = FALSE, pool = TRUE, seed = NULL, ...)
+jackstraw_kmeans(
+  dat,
+  kmeans.dat,
+  s = NULL,
+  B = NULL,
+  center = TRUE,
+  covariate = NULL,
+  verbose = FALSE,
+  pool = TRUE,
+  seed = NULL,
+  ...
+)
 }
 \arguments{
 \item{dat}{a matrix with \code{m} rows as variables and \code{n} columns as observations.}
@@ -55,7 +65,9 @@ jackstraw.out <- jackstraw_kmeans(dat, kmeans.dat)
 }
 }
 \references{
-Chung (2018) Statistical significance for cluster membership. biorxiv, doi:10.1101/248633 \url{https://www.biorxiv.org/content/early/2018/01/16/248633}
+Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
+
+Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \author{
 Neo Christopher Chung \email{nchchung@gmail.com}

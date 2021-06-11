@@ -24,21 +24,7 @@ Estimate populatoin structure in genome-wide genotype matrices.
 It performs the logistic factor analysis, similar to \code{lfa} function in the lfa package.
 This function works without C++ dependencies.
 However, it would be much slower, does not include any other LFA-related functions, checks, and warnings.
-}
-\examples{
-set.seed(1234)
-## simulate genotype data from a logistic factor model
-m=5000; n=100; pi0=.9
-m0 = round(m*pi0)
-m1 = m-round(m*pi0)
-B = matrix(0, nrow=m, ncol=1)
-B[1:m1,] = matrix(runif(m1*n, min=-.5, max=.5), nrow=m1, ncol=1)
-L = matrix(rnorm(n), nrow=1, ncol=n)
-BL = B \%*\% L
-prob = exp(BL)/(1+exp(BL))
-
-dat = matrix(rbinom(m*n, 2, as.numeric(prob)), m, n)
-out = lfa.corpcor(x=dat, d=2)
+This function remains here for backward compatability - please use the \code{lfa} package.
 }
 \seealso{
 \link{jackstraw_lfa}

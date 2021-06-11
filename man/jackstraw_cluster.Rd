@@ -4,10 +4,21 @@
 \alias{jackstraw_cluster}
 \title{Jackstraw for the User-Defined Clustering Algorithm}
 \usage{
-jackstraw_cluster(dat, k, cluster = NULL, centers = NULL,
-  algorithm = function(x, centers) kmeans(x, centers, ...), s = 1,
-  B = 1000, center = TRUE, noise = NULL, covariate = NULL,
-  verbose = FALSE, seed = NULL, ...)
+jackstraw_cluster(
+  dat,
+  k,
+  cluster = NULL,
+  centers = NULL,
+  algorithm = function(x, centers) kmeans(x, centers, ...),
+  s = 1,
+  B = 1000,
+  center = TRUE,
+  noise = NULL,
+  covariate = NULL,
+  verbose = FALSE,
+  seed = NULL,
+  ...
+)
 }
 \arguments{
 \item{dat}{a data matrix with \code{m} rows as variables and \code{n} columns as observations.}
@@ -59,7 +70,9 @@ The rows of \code{centers} correspond to \code{k} clusters, as well as available
 This function allows you to specify a parametric distribution of a noise term. It is an experimental feature.
 }
 \references{
-Chung (2018) Statistical significance for cluster membership. biorxiv, doi:10.1101/248633 \url{https://www.biorxiv.org/content/early/2018/01/16/248633}
+Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
+
+Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \author{
 Neo Christopher Chung \email{nchchung@gmail.com}

@@ -8,7 +8,7 @@
 \description{
 Test for association between the observed data
 	and their systematic patterns of variations.
-	Systematic patterns may be captured by latent variables using principal component analysis (PCA), factor analysis (FA), and related methods. The jackstraw enables statistical testing for association between observed variables and latent variables, as captured by PCs or other estimates. Similarly, unsupervised clustering, such as K-means clustering, partition around medoids (PAM), and others, finds subpopulations among the observed variables. The jackstraw estimates statistical significance of cluster membership, including unsupervised evaluation of cell identities in single cell RNA-seq. P-values and posterior probabilities allows one to rigorously evaluate the strength of cluster membership assignments.
+	The jackstraw enables statistical testing for association between observed variables and latent variables, as captured by principal component analysis (PCA), factor analysis (FA), or other estimates. Similarly, unsupervised clustering, such as K-means clustering, partition around medoids (PAM), and others, finds subpopulations among the observed variables. The jackstraw estimates statistical significance of cluster membership, including unsupervised evaluation of cell identities in single cell RNA-seq. P-values and posterior probabilities allows one to rigorously evaluate the strength of cluster membership assignments. See the GitHub repository for the latest developments and further helps.
 }
 \details{
 The jackstraw package provides a resampling strategy and testing scheme to estimate statistical significance
@@ -28,9 +28,9 @@ Overall, it computes \code{m} p-values of association between the \code{m} data 
 From \code{m} p-values, \link{pip} computes posterior inclusion probabilities, that are useful for feature selection and visualization.
 }
 \references{
-Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{http://bioinformatics.oxfordjournals.org/content/31/4/545}
+Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
 
-Chung (2018) Statistical significance for cluster membership. biorxiv, doi:10.1101/248633 \url{https://www.biorxiv.org/content/early/2018/01/16/248633}
+Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \seealso{
 \link{jackstraw_pca} \link{jackstraw_subspace} \link{jackstraw_kmeans} \link{jackstraw_cluster}

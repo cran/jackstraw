@@ -4,10 +4,20 @@
 \alias{jackstraw_MiniBatchKmeans}
 \title{Non-Parametric Jackstraw for Mini Batch K-means Clustering}
 \usage{
-jackstraw_MiniBatchKmeans(dat, MiniBatchKmeans.output = NULL, s = NULL,
-  B = NULL, center = TRUE, covariate = NULL, verbose = FALSE,
-  seed = NULL, batch_size = floor(nrow(dat)/100),
-  initializer = "kmeans++", pool = TRUE, ...)
+jackstraw_MiniBatchKmeans(
+  dat,
+  MiniBatchKmeans.output = NULL,
+  s = NULL,
+  B = NULL,
+  center = TRUE,
+  covariate = NULL,
+  verbose = FALSE,
+  seed = NULL,
+  batch_size = floor(nrow(dat)/100),
+  initializer = "kmeans++",
+  pool = TRUE,
+  ...
+)
 }
 \arguments{
 \item{dat}{a data matrix with \code{m} rows as variables and \code{n} columns as observations.}
@@ -62,7 +72,9 @@ MiniBatchKmeans.output = MiniBatchKmeans.output)
 }
 }
 \references{
-Chung (2018) Statistical significance for cluster membership. biorxiv, doi:10.1101/248633 \url{https://www.biorxiv.org/content/early/2018/01/16/248633}
+Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
+
+Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \author{
 Neo Christopher Chung \email{nchchung@gmail.com}
