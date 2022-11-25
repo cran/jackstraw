@@ -9,11 +9,11 @@ jackstraw_kmeans(
   kmeans.dat,
   s = NULL,
   B = NULL,
-  center = TRUE,
+  center = FALSE,
   covariate = NULL,
-  verbose = FALSE,
+  match = TRUE,
   pool = TRUE,
-  seed = NULL,
+  verbose = FALSE,
   ...
 )
 }
@@ -26,15 +26,15 @@ jackstraw_kmeans(
 
 \item{B}{a number of resampling iterations.}
 
-\item{center}{a logical specifying to center the rows. By default, \code{TRUE}.}
+\item{center}{a logical specifying to center the rows of the null samples. By default, \code{TRUE}.}
 
 \item{covariate}{a model matrix of covariates with \code{n} observations. Must include an intercept in the first column.}
 
-\item{verbose}{a logical specifying to print the computational progress. By default, \code{FALSE}.}
+\item{match}{a logical specifying to match the observed clusters and jackstraw clusters using minimum Euclidean distances.}
 
 \item{pool}{a logical specifying to pool the null statistics across all clusters. By default, \code{TRUE}.}
 
-\item{seed}{a seed for the random number generator.}
+\item{verbose}{a logical specifying to print the computational progress. By default, \code{FALSE}.}
 
 \item{...}{optional arguments to control the k-means clustering algorithm (refers to \code{kmeans}).}
 }
@@ -58,16 +58,14 @@ The input data (\code{dat}) must be of a class `matrix`.
 }
 \examples{
 \dontrun{
-set.seed(1234)
 dat = t(scale(t(Jurkat293T), center=TRUE, scale=FALSE))
 kmeans.dat <- kmeans(dat, centers=2, nstart = 10, iter.max = 100)
 jackstraw.out <- jackstraw_kmeans(dat, kmeans.dat)
 }
+
 }
 \references{
-Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
-
-Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
+Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities. Bioinformatics, 36(10): 3107–3114 \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \author{
 Neo Christopher Chung \email{nchchung@gmail.com}

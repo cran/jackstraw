@@ -12,7 +12,6 @@ jackstraw_MiniBatchKmeans(
   center = TRUE,
   covariate = NULL,
   verbose = FALSE,
-  seed = NULL,
   batch_size = floor(nrow(dat)/100),
   initializer = "kmeans++",
   pool = TRUE,
@@ -33,8 +32,6 @@ jackstraw_MiniBatchKmeans(
 \item{covariate}{a model matrix of covariates with \code{n} observations. Must include an intercept in the first column.}
 
 \item{verbose}{a logical specifying to print the computational progress. By default, \code{FALSE}.}
-
-\item{seed}{a seed for the random number generator.}
 
 \item{batch_size}{the size of the mini batches.}
 
@@ -63,18 +60,16 @@ and protects against an anti-conservative bias.
 \examples{
 \dontrun{
 library(ClusterR)
-set.seed(1234)
 dat = t(scale(t(Jurkat293T), center=TRUE, scale=FALSE))
 MiniBatchKmeans.output <- MiniBatchKmeans(data=dat, clusters = 2, batch_size = 300,
 initializer = "kmeans++")
 jackstraw.output <- jackstraw_MiniBatchKmeans(dat,
 MiniBatchKmeans.output = MiniBatchKmeans.output)
 }
+
 }
 \references{
-Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
-
-Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
+Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities. Bioinformatics, 36(10): 3107–3114 \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \author{
 Neo Christopher Chung \email{nchchung@gmail.com}

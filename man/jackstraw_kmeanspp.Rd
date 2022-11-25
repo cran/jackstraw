@@ -13,7 +13,6 @@ jackstraw_kmeanspp(
   covariate = NULL,
   verbose = FALSE,
   pool = TRUE,
-  seed = NULL,
   ...
 )
 }
@@ -33,8 +32,6 @@ jackstraw_kmeanspp(
 \item{verbose}{a logical specifying to print the computational progress. By default, \code{FALSE}.}
 
 \item{pool}{a logical specifying to pool the null statistics across all clusters. By default, \code{TRUE}.}
-
-\item{seed}{a seed for the random number generator.}
 
 \item{...}{optional arguments to control the k-means clustering algorithm (refers to \code{ClusterR::KMeans_rcpp}).}
 }
@@ -62,18 +59,16 @@ The input data (\code{dat}) must be of a class `matrix`.
 }
 \examples{
 \dontrun{
-set.seed(1234)
 library(ClusterR)
 dat = t(scale(t(Jurkat293T), center=TRUE, scale=FALSE))
 kmeans.dat <- KMeans_rcpp(dat,  clusters = 10, num_init = 1,
 max_iters = 100, initializer = 'kmeans++')
 jackstraw.out <- jackstraw_kmeanspp(dat, kmeans.dat)
 }
+
 }
 \references{
-Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
-
-Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
+Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities. Bioinformatics, 36(10): 3107–3114 \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \author{
 Neo Christopher Chung \email{nchchung@gmail.com}

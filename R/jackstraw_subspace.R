@@ -11,32 +11,27 @@
 #' are replaced by synthetic null variables generated from a specified distribution.
 #'
 #' @param dat a data matrix with \code{m} rows as variables and \code{n} columns as observations.
-#' @param FUN optionally, provide a specfic function to estimate LVs. Must output \code{r} estimated LVs in a \code{n*r} matrix.
-#' @param noise specify a parametric distribution to generate a noise term. If \code{NULL}, a non-parametric jackstraw test is performed.
 #' @param r a number of significant latent variables.
+#' @param FUN Provide a specific function to estimate LVs. Must output \code{r} estimated LVs in a \code{n*r} matrix.
+#' @param noise specify a parametric distribution to generate a noise term. If \code{NULL}, a non-parametric jackstraw test is performed.
 #' @param r1 a numeric vector of latent variables of interest.
 #' @param s a number of ``synthetic'' null variables. Out of \code{m} variables, \code{s} variables are independently permuted.
 #' @param B a number of resampling iterations.
 #' @param covariate a model matrix of covariates with \code{n} observations. Must include an intercept in the first column.
 #' @param verbose a logical specifying to print the computational progress.
-#' @param seed a seed for the random number generator.
 #'
 #' @return \code{jackstraw_subspace} returns a list consisting of
 #' \item{p.value}{\code{m} p-values of association tests between variables and their principal components}
 #' \item{obs.stat}{\code{m} observed statistics}
 #' \item{null.stat}{\code{s*B} null statistics}
 #'
-#' @importFrom methods is
-#' @importFrom corpcor fast.svd
-#' @export jackstraw_subspace
 #' @author Neo Christopher Chung \email{nchchung@@gmail.com}
 #' @references Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
-#' @references Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
+#' @references Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities. Bioinformatics, 36(10): 3107–3114 \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 #'
 #' @seealso \link{jackstraw_pca} \link{jackstraw}
 #'
 #' @examples
-#' set.seed(1234)
 #' ## simulate data from a latent variable model: Y = BL + E
 #' B = c(rep(1,50),rep(-1,50), rep(0,900))
 #' L = rnorm(20)
@@ -46,41 +41,68 @@
 #'
 #' ## apply the jackstraw with the svd as a function
 #' out = jackstraw_subspace(dat, FUN = function(x) svd(x)$v[,1,drop=FALSE], r=1, s=100, B=50)
-jackstraw_subspace <- function(dat, 
-    FUN, r = NULL, 
-    r1 = NULL, s = NULL, B = NULL, 
-    covariate = NULL, noise = NULL, verbose = TRUE, 
-    seed = NULL) {
-    if (!is.null(seed)) 
-        set.seed(seed)
-    if (is.null(r)) 
-        stop("Must provide a number of latent variables, r.")
+#' 
+#' @export
+jackstraw_subspace <- function(
+                               dat, 
+                               r, 
+                               FUN,
+                               r1 = NULL,
+                               s = NULL,
+                               B = NULL, 
+                               covariate = NULL,
+                               noise = NULL,
+                               verbose = TRUE
+                               ) {
+    # check mandatory data
+    if ( missing( dat ) )
+        stop( '`dat` is required!' )
+    if ( missing( r ) )
+        stop( '`r` is required!' )
+    if ( missing( FUN ) )
+        stop( "`FUN`, a function to estimate latent variables, is required!" )
+    if ( !is.matrix( dat ) )
+        stop( '`dat` must be a matrix!' )
+    if ( !is.function( FUN ) )
+        stop( "`FUN` must be a function!" )
     
-    m <- dim(dat)[1]
-    n <- dim(dat)[2]
+    # more validations of mandatory parameters
+    m <- nrow(dat)
+    n <- ncol(dat)
+    if ( !(r > 0 && r < n) )
+        stop( "`r` is not in valid range between `1` and `n-1` (`n` is number of individuals)." )
+
+    # if there are covariates, the dimensions must agree
+    # covariate can be either a vector or a matrix, test both cases
+    if ( !is.null( covariate ) ) {
+        if ( is.matrix( covariate ) ) {
+            if ( nrow( covariate ) != n )
+                stop( 'Matrix `covariate` must have `n` rows, has: ', nrow( covariate ), ', expected: ', n )
+        } else {
+            if ( length( covariate ) != n ) 
+                stop( 'Vector `covariate` must have `n` elements, has: ', length( covariate ), ', expected: ', n )
+        }
+    }
+
     if (is.null(s)) {
         s <- round(m/10)
-        message(paste0("A number of null variables (s) to be permuted is not specified: s=round(0.10*m)=", 
-            s, "."))
+        if (verbose)
+            message( "Number of null variables (s) to be permuted is not specified: s=round(0.10*m)=", s, "." )
     }
     if (is.null(B)) {
         B <- round(m * 10/s)
-        message(paste0("A number of resampling iterations (B) is not specified: B=round(m*10/s)=", 
-            B, "."))
+        if (verbose)
+            message( "Number of resampling iterations (B) is not specified: B=round(m*10/s)=", B, "." )
     }
-    if (is.null(FUN)) {
-        stop("Please provide a function to estimate latent variables.")
-    }
-    
+
     FUN <- match.fun(FUN)
     LV <- FUN(dat)
     if (r != ncol(LV)) 
-        stop(paste0("The number of latent variables ", 
-            r, "is not equal to the number of column(s) provided by ", 
-            FUN))
+        stop( "The number of latent variables ", r, " is not equal to the number of column(s) provided by FUN: ", ncol(LV) )
     
     if (is.null(r1)) 
         r1 <- 1:r
+    
     if (all(seq(r) %in% r1)) {
         # no adjustment LVs
         r0 <- NULL
@@ -92,56 +114,61 @@ jackstraw_subspace <- function(dat,
         ALV <- LV[, r0, drop = FALSE]
         LV <- LV[, r1, drop = FALSE]  ## note that LV firstly contained the r latent variables; then reduced to the r1 latent variables of interest.
     }
-    obs <- FSTAT(dat = dat, LV = LV, 
-        ALV = ALV, covariate = covariate)$fstat
+    
+    obs <- FSTAT(
+        dat = dat,
+        LV = LV, 
+        ALV = ALV,
+        covariate = covariate
+    )$fstat
     
     if (!is.null(noise)) {
         noise <- match.fun(noise)
         message("The distribution for the noise term is specified; performing the parametric jackstraw test.")
     }
     
-    if (verbose == TRUE) {
-        cat(paste0("\nComputating null statistics (", 
-            B, " total iterations): "))
-    }
+    if ( verbose )
+        cat(paste0("\nComputating null statistics (", B, " total iterations): "))
 
     # Estimate null association
     # statistics
     null <- matrix(0, nrow = s, ncol = B)
     for (i in 1:B) {
-        if (verbose == TRUE) {
+        if ( verbose )
             cat(paste(i, " "))
-        }
 
-        random.s <- sample(1:m, 
-            size = s, replace = FALSE)
+        random.s <- sample.int( m, s )
         if (!is.null(noise)) {
-            s.nulls <- matrix(noise(n * 
-                s), nrow = s, ncol = n)
+            s.nulls <- matrix( noise(n * s), nrow = s, ncol = n )
         } else {
-            s.nulls <- t(apply(dat[random.s, 
-                , drop = FALSE], 
-                1, function(x) sample(x)))
+            s.nulls <- dat[ random.s, , drop = FALSE ]
+            s.nulls <- t( apply( s.nulls, 1, sample ) )
         }
         jackstraw.dat <- dat
         jackstraw.dat[random.s, ] <- s.nulls
         
         LV.js <- FUN(jackstraw.dat)
         if (!is.null(r0)) {
-            ALV.js <- LV.js[, r0, 
-                drop = FALSE]
-            LV.js <- LV.js[, r1, 
-                drop = FALSE]
+            ALV.js <- LV.js[, r0, drop = FALSE]
+            LV.js <- LV.js[, r1, drop = FALSE]
         }
-        null[, i] <- FSTAT(dat = s.nulls, 
-            LV = LV.js, ALV = ALV.js, 
-            covariate = covariate)$fstat
+        null[, i] <- FSTAT(
+            dat = s.nulls, 
+            LV = LV.js,
+            ALV = ALV.js, 
+            covariate = covariate
+        )$fstat
     }
     
-    p.value <- empPvals(as.vector(obs), as.vector(null))
+    p.value <- empPvals( obs, null )
     
-    return(list(call = match.call(), 
-        p.value = p.value, obs.stat = obs, 
-        null.stat = null))
+    return(
+        list(
+            call = match.call(), 
+            p.value = p.value,
+            obs.stat = obs, 
+            null.stat = null
+        )
+    )
 }
 

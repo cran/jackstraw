@@ -6,23 +6,22 @@
 \usage{
 jackstraw_subspace(
   dat,
+  r,
   FUN,
-  r = NULL,
   r1 = NULL,
   s = NULL,
   B = NULL,
   covariate = NULL,
   noise = NULL,
-  verbose = TRUE,
-  seed = NULL
+  verbose = TRUE
 )
 }
 \arguments{
 \item{dat}{a data matrix with \code{m} rows as variables and \code{n} columns as observations.}
 
-\item{FUN}{optionally, provide a specfic function to estimate LVs. Must output \code{r} estimated LVs in a \code{n*r} matrix.}
-
 \item{r}{a number of significant latent variables.}
+
+\item{FUN}{Provide a specific function to estimate LVs. Must output \code{r} estimated LVs in a \code{n*r} matrix.}
 
 \item{r1}{a numeric vector of latent variables of interest.}
 
@@ -35,8 +34,6 @@ jackstraw_subspace(
 \item{noise}{specify a parametric distribution to generate a noise term. If \code{NULL}, a non-parametric jackstraw test is performed.}
 
 \item{verbose}{a logical specifying to print the computational progress.}
-
-\item{seed}{a seed for the random number generator.}
 }
 \value{
 \code{jackstraw_subspace} returns a list consisting of
@@ -57,7 +54,6 @@ This function allows you to specify a parametric distribution of a noise term. I
 are replaced by synthetic null variables generated from a specified distribution.
 }
 \examples{
-set.seed(1234)
 ## simulate data from a latent variable model: Y = BL + E
 B = c(rep(1,50),rep(-1,50), rep(0,900))
 L = rnorm(20)
@@ -67,11 +63,12 @@ dat = t(scale(t(dat), center=TRUE, scale=TRUE))
 
 ## apply the jackstraw with the svd as a function
 out = jackstraw_subspace(dat, FUN = function(x) svd(x)$v[,1,drop=FALSE], r=1, s=100, B=50)
+
 }
 \references{
 Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
 
-Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
+Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities. Bioinformatics, 36(10): 3107–3114 \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \seealso{
 \link{jackstraw_pca} \link{jackstraw}

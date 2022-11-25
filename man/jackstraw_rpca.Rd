@@ -6,22 +6,21 @@
 \usage{
 jackstraw_rpca(
   dat,
-  r1 = NULL,
   r = NULL,
+  r1 = NULL,
   s = NULL,
   B = NULL,
   covariate = NULL,
   verbose = TRUE,
-  seed = NULL,
   ...
 )
 }
 \arguments{
 \item{dat}{a data matrix with \code{m} rows as variables and \code{n} columns as observations.}
 
-\item{r1}{a numeric vector of principal components of interest. Choose a subset of \code{r} significant PCs to be used.}
-
 \item{r}{a number (a positive integer) of significant principal components. See \link{permutationPA} and other methods.}
+
+\item{r1}{a numeric vector of principal components of interest. Choose a subset of \code{r} significant PCs to be used.}
 
 \item{s}{a number (a positive integer) of ``synthetic'' null variables. Out of \code{m} variables, \code{s} variables are independently permuted.}
 
@@ -30,8 +29,6 @@ jackstraw_rpca(
 \item{covariate}{a data matrix of covariates with corresponding \code{n} observations (do not include an intercept term).}
 
 \item{verbose}{a logical specifying to print the computational progress.}
-
-\item{seed}{a numeric seed for the random number generator.}
 
 \item{...}{additional arguments to \code{rpca}.}
 }
@@ -42,7 +39,7 @@ jackstraw_rpca(
 \item{null.stat}{\code{s*B} null F-test statistics}
 }
 \description{
-Test association between the observed variables and their latent variables captured by principal components (PCs). PCs are computed by randomized Singular Value Decomposition (see \code{rsvd}).
+Test association between the observed variables and their latent variables captured by principal components (PCs). PCs are computed by randomized Singular Value Decomposition (see \code{\link[rsvd]{rsvd}}).
 }
 \details{
 This function computes \code{m} p-values of linear association between \code{m} variables and their PCs.
@@ -51,13 +48,13 @@ and protects against an anti-conservative bias.
 
 Provide the data matrix, with \code{m} variables as rows and \code{n} observations as columns.
 Given that there are \code{r} significant PCs, this function tests for linear association between
-\code{m} varibles and their \code{r} PCs.
+\code{m} variables and their \code{r} PCs.
 
-You could specify a subset of significant PCs that you are interested in (\code{PC}). If \code{PC} is given,
-then this function computes statistical significance of association between \code{m} variables and \code{PC},
+You could specify a subset of significant PCs that you are interested in (\code{r1}). If \code{r1} is given,
+then this function computes statistical significance of association between \code{m} variables and \code{r1},
 while adjusting for other PCs (i.e., significant PCs that are not your interest).
 For example, if you want to identify variables associated with 1st and 2nd PCs,
-when your data contains three significant PCs, set \code{r=3} and \code{PC=c(1,2)}.
+when your data contains three significant PCs, set \code{r=3} and \code{r1=c(1,2)}.
 
 Please take a careful look at your data and use appropriate graphical and statistical criteria
 to determine a number of significant PCs, \code{r}. The number of significant PCs depends on the data structure and the context.
@@ -68,11 +65,10 @@ If \code{s} is not supplied, \code{s} is set to about 10\% of \code{m} variables
 If \code{B} is not supplied, \code{B} is set to \code{m*10/s}.
 }
 \examples{
-set.seed(1234)
 ## simulate data from a latent variable model: Y = BL + E
-B = c(rep(1,50),rep(-1,50), rep(0,900))
+B = c(rep(1,10),rep(-1,10), rep(0,180))
 L = rnorm(20)
-E = matrix(rnorm(1000*20), nrow=1000)
+E = matrix(rnorm(200*20), nrow=200)
 dat = B \%*\% t(L) + E
 dat = t(scale(t(dat), center=TRUE, scale=TRUE))
 
@@ -82,14 +78,16 @@ out = jackstraw_rpca(dat, r=1)
 ## Use optional arguments
 ## For example, set s and B for a balance between speed of the algorithm and accuracy of p-values
 \dontrun{
-## out = jackstraw_rpca(dat, r=1, s=10, B=1000, seed=5678)
+## out = jackstraw_rpca(dat, r=1, s=10, B=200)
 }
+
 }
 \references{
 Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
-
-Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \seealso{
 \link{jackstraw} \link{jackstraw_subspace} \link{permutationPA}
+}
+\author{
+Neo Christopher Chung \email{nchchung@gmail.com}
 }

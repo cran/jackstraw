@@ -7,16 +7,16 @@
 jackstraw_cluster(
   dat,
   k,
-  cluster = NULL,
-  centers = NULL,
-  algorithm = function(x, centers) kmeans(x, centers, ...),
+  cluster,
+  centers,
+  algorithm = function(x, centers, ...) stats::kmeans(x, centers, ...),
   s = 1,
   B = 1000,
   center = TRUE,
   noise = NULL,
   covariate = NULL,
+  pool = TRUE,
   verbose = FALSE,
-  seed = NULL,
   ...
 )
 }
@@ -29,7 +29,7 @@ jackstraw_cluster(
 
 \item{centers}{a matrix of all cluster centers.}
 
-\item{algorithm}{a clustering algorithm to use, where an output must include `cluster` and `centers`. For exact specification, see \code{kmeans}.}
+\item{algorithm}{a clustering algorithm to use, where an output must include `cluster` and `centers`. For exact specification, see \code{\link[stats]{kmeans}}.}
 
 \item{s}{a number of ``synthetic'' null variables. Out of \code{m} variables, \code{s} variables are independently permuted.}
 
@@ -41,11 +41,11 @@ jackstraw_cluster(
 
 \item{covariate}{a model matrix of covariates with \code{n} observations. Must include an intercept in the first column.}
 
+\item{pool}{a logical specifying to pool the null statistics across all clusters. By default, \code{TRUE}.}
+
 \item{verbose}{a logical specifying to print the computational progress. By default, \code{FALSE}.}
 
-\item{seed}{a seed for the random number generator.}
-
-\item{...}{optional arguments to control the clustering algorithm.}
+\item{...}{additional, optional arguments to `algorithm`.}
 }
 \value{
 \code{jackstraw_cluster} returns a list consisting of
@@ -70,9 +70,7 @@ The rows of \code{centers} correspond to \code{k} clusters, as well as available
 This function allows you to specify a parametric distribution of a noise term. It is an experimental feature.
 }
 \references{
-Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
-
-Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
+Chung (2020) Statistical significance of cluster membership for unsupervised evaluation of cell identities. Bioinformatics, 36(10): 3107–3114 \url{https://academic.oup.com/bioinformatics/article/36/10/3107/5788523}
 }
 \author{
 Neo Christopher Chung \email{nchchung@gmail.com}
