@@ -1,4 +1,4 @@
-6e1214dd08411d4c4fbc220b01d52d6c *DESCRIPTION
+9d1da60911b166af96b43e2bbc409e2c *DESCRIPTION
 a855806778d531610f7bfb5ad4d04165 *NAMESPACE
 f550f8fe0ee38f8a4b0c7202952f3bc9 *NEWS.md
 05ec0610bb1a4ed4b183eaf6f221843c *R/Jurkat293T.R
@@ -33,4 +33,4 @@ bbc42d317898eecdc360ff8b8924c904 *man/jackstraw_subspace.Rd
 25ef2d0e9129d6e34e8b01c3196aae0d *man/permutationPA.Rd
 13b28bb16680734d3bc5fc016e0a70e1 *man/pip.Rd
 d6ba3fc3b0108b925f8bfb5679a179e2 *tests/testthat.R
-ff1a05646aaf293cc0ce9f39948d45db *tests/testthat/test-jackstraw.R
+979e0e33f79616545d6fd214e625294c *tests/testthat/test-jackstraw.R
