@@ -1,7 +1,7 @@
 #' Find a number of clusters or principal components
 #'
 #' There are a wide range of algorithms and visual techniques to identify
-#' a number of clusters or principal components embeded in the observed data.
+#' a number of clusters or principal components embedded in the observed data.
 #'
 #' It is critical to explore the eigenvalues, cluster stability, and visualization.
 #' See R packages \code{bootcluster}, \code{EMCluster}, and \code{nFactors}.
@@ -25,7 +25,7 @@ find_k <- function() {
 #'
 #' Estimate a number of significant principal components from a permutation test.
 #'
-#' Adopted from sva::num.sv, and based on Buja and Eyuboglu (1992)
+#' Adopted from \code{sva::num.sv}, and based on Buja and Eyuboglu (1992)
 #'
 #' @param dat a data matrix with \code{m} rows as variables and \code{n} columns as observations.
 #' @param B a number (a positive integer) of resampling iterations.
@@ -36,7 +36,7 @@ find_k <- function() {
 #' \item{r}{an estimated number of significant principal components based on thresholding p-values at \code{threshold}}
 #' \item{p}{a list of p-values for significance of principal components}
 #'
-#' @references Buja A and Eyuboglu N. (1992) Remarks on parallel analysis. Multivariate Behavioral Research, 27(4), 509-540
+#' @references Buja A and Eyuboglu N. (1992) Remarks on parallel analysis. Multivariate Behavioral Research, 27(4), 509-540 \doi{10.1207/s15327906mbr2704_2}
 #' @export
 permutationPA <- function(
                           dat,

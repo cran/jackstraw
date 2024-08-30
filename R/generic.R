@@ -1,6 +1,6 @@
 # NOTES:
 # - what's the difference between ALV and covariate?  Shouldn't they be merged at this point?
-# - `parametric = TRUE` is never used by any dependencies in this package
+# - `parametric = TRUE` is never used by any dependencies in this package (but popdiff paper uses it!)
 FSTAT <- function(dat, LV, ALV = NULL,
     covariate = NULL, parametric = FALSE) {
     # Calculate F-statistics and
@@ -13,6 +13,8 @@ FSTAT <- function(dat, LV, ALV = NULL,
         stop( '`dat` must be a matrix!' )
     if ( missing( LV ) )
         stop( '`LV` is required!' )
+    if ( !is.matrix( LV ) )
+        stop( '`LV` must be a matrix!' )
     
     m <- nrow(dat)
     n <- ncol(dat)

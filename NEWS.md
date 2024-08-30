@@ -61,6 +61,12 @@ Exclusive list of functions without unit tests (all are redundant with other pac
   The only internal dependencies were `jackstraw_lfa` and `jackstraw_alstructure`.
 - Updated `README.md` to instruct users to install the most updated forks of `lfa` and `gcatest` on GitHub (under username `alexviiia`), rather than the Bioconductor versions that are lacking critical updates.
 
+# jackstraw 1.3.5.9000 (2021-06-21)
+
+- Version was not bumped accidentally
+- Removed old vignette
+- Fixed a small error in `jackstraw_lfa` example
+
 # jackstraw 1.3.6.9000 (2022-02-08)
 
 - All `jackstraw_*` functions now return `NA` p-values for `NA` statistics.
@@ -68,24 +74,58 @@ Exclusive list of functions without unit tests (all are redundant with other pac
 - Removed two `jackstraw_pam` toy example unit tests that failed often due to colinearity.
 - Reformatted this `NEWS.md` slightly to improve its automatic parsing.
 
-# jackstraw 1.3.7 (2022-11-10)
+# jackstraw 1.3.9.9000 (2022-11-28)
 
-- Temporary changes for CRAN resubmission
-  - Removed `jackstraw_alstructure` because dependency `alstructure` is not on CRAN or Bioconductor.
-  - Removed BEDMatrix functionality for function `jackstraw_lfa` because the latest versions of the dependencies `lfa` and `gcatest` on Bioconductor do not support BEDMatrix (the development versions that do support BEDMatrix are on GitHub only).
-  - Removed `lfa` and `gcatest` devel version requirements.
-  - Added internal functions `delta_deviance_lf`, `delta_deviance_snp`, `delta_deviance_snp_lf`, which are copies of the `gcatest` functions of the same name (available on development version only, hence this copying)
-- Made testing a bit more lenient towards some NA cases
+- Heavy updates to `README.md`
+- Updated summary in `DESCRIPTION`
+- Updated paper citations and URLs across function documentation
+- Bumped version to exceed CRAN versions (which are currently on a separate branch due to temporary issues with dependencies `lfa` and `gcatest`)
+
+# jackstraw 1.3.10.9000 (2023-08-03)
+
+- Function `jackstraw_MiniBatchKmeans`: internally added `suppressWarnings` wrapper around `ClusterR::predict_MBatchKMeans` to silence a misleading deprecation warning.  The function as a whole is not deprecated, but its output for a case we don't use (fuzzy=TRUE) is changing in the future.  Warning message now being suppressed:
+  - `predict_MBatchKMeans()` was deprecated in `ClusterR` 1.3.0.
+  - Beginning from version 1.4.0, if the fuzzy parameter is TRUE the function `predict_MBatchKMeans` will return only the probabilities, whereas currently it also returns the hard clusters
+- Removed strict dependence of the `alstructure` R package (on GitHub only), user now has to provide the function to apply to data for `jackstraw_alstructure` to work.
+- Documentation
+  - Corrected citation links for two similar papers
+  - Function documentation (.Rd files) was actually updated as described in the last version (last commit had source .R files edited but not their .Rd counterparts).
+  - Added a recent missing `NEWS.md` entry
+  - Replaced two links that gave errors in `README.md`
+
+Changes manually ported from latest CRAN branch:
+
 - Minor non-code edits
   - Spell checked documentation
   - Changed to single maintainer (Neo)
   - Removed `VignetteBuilder: knitr` since there's no vignette anymore
   - Fixed broken or outdated URLs
+  - Removed package dependency `parallel` which is not being used.
+  - Removed many package suggested dependencies (`knitr`, `rmarkdown`, `ggplot2`, `mutoss`, `Matrix`, `gridExtra`, `cowplot`, `scales`, `formatR`) that were only used in a vignette currently not being built.
+  - Reduced example dimensions for `jackstraw_irlba` and `jackstraw_rpca` by 5 to keep their runtime low.
 
-# jackstraw 1.3.8 (2022-11-15)
+# jackstraw 1.3.11.9000 (2023-08-03)
 
-- Temporarily removed exported function `jackstraw_lfa` and package dependencies `lfa` and `gcatest`, since `lfa` is having build errors on bioc-devel.
-  - Also removed internal functions `pseudo_Rsq`, `mcfadden_Rsq_snp`, `efron_Rsq`, `efron_Rsq_snp`, `delta_deviance_{lf,snp,snp_lf}.R` (all depended on `lfa`)
-  - Also removed package dependencies `parallel` and `genio` which are temporarily not being used.
-- Removed many package suggested dependencies (`knitr`, `rmarkdown`, `ggplot2`, `mutoss`, `Matrix`, `gridExtra`, `cowplot`, `scales`, `formatR`) that were only used in a vignette currently not being built.
-- Reduced example dimensions for `jackstraw_irlba` and `jackstraw_rpca` by 5 to keep their runtime low.
+- Function `jackstraw_lfa` added option `permute_alleles`, to change default genotype permutation to an allele-level permutation algorithm that results in much more Binomial data, particularly when input data is highly structured.
+
+# jackstraw 1.3.12.9000 (2024-08-01)
+
+- `README` edited installation instructions to reflect that dependencies `lfa` and `gcatest` are now updated on Bioconductor (no need to install GitHub versions) and `alstructure` is now optional.
+- Function `jackstraw_lfa` changed option `permute_alleles` to default to `TRUE`, which performs much better, and documentation now recommends against changing that option except for research purposes.
+- Corrected typos throughout, and marked code as such to prevent false positives.
+
+# jackstraw 1.3.13 (2024-08-01)
+
+- CRAN submission
+- DESCRIPTION replaced `Author` and `Maintainer` with `Authors@R` field
+- Function `jackstraw_lfa` silenced warnings that occurs only if input is `BEDMatrix` object and OS is Windows, in which case some temporary files cannot be deleted during the R session.
+- Created `cran-comments.md`
+
+# jackstraw 1.3.14 (2024-08-29)
+
+- `README` edited. Use cases as a separate subsection.
+- Description in `DESCRIPTION` edited.
+
+# jackstraw 1.3.15 (2024-08-30)
+
+- Change publication links to DOI links in `.Rd` and `README`, as per CRAN submission rejection

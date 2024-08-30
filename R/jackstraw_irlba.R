@@ -13,7 +13,7 @@
 #' You could specify a subset of significant PCs that you are interested in (\code{r1}). If \code{r1} is given,
 #' then this function computes statistical significance of association between \code{m} variables and \code{r1},
 #' while adjusting for other PCs (i.e., significant PCs that are not your interest).
-#' For example, if you want to identify variables associated with 1st and 2nd PCs,
+#' For example, if you want to identify variables associated with first and second PCs,
 #' when your data contains three significant PCs, set \code{r=3} and \code{r1=c(1,2)}.
 #'
 #' Please take a careful look at your data and use appropriate graphical and statistical criteria
@@ -39,7 +39,7 @@
 #' \item{null.stat}{\code{s*B} null F-test statistics}
 #'
 #' @author Neo Christopher Chung \email{nchchung@@gmail.com}
-#' @references Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \url{https://academic.oup.com/bioinformatics/article/31/4/545/2748186}
+#' @references Chung and Storey (2015) Statistical significance of variables driving systematic variation in high-dimensional data. Bioinformatics, 31(4): 545-554 \doi{10.1093/bioinformatics/btu674}
 #'
 #' @seealso \link{jackstraw} \link{jackstraw_subspace} \link{permutationPA}
 #'
