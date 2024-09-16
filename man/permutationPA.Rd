@@ -27,5 +27,5 @@ Estimate a number of significant principal components from a permutation test.
 Adopted from \code{sva::num.sv}, and based on Buja and Eyuboglu (1992)
 }
 \references{
-Buja A and Eyuboglu N. (1992) Remarks on parallel analysis. Multivariate Behavioral Research, 27(4), 509-540 \doi{10.1207/s15327906mbr2704_2}
+Buja A and Eyuboglu N. (1992) Remarks on parallel analysis. Multivariate Behavioral Research, 27(4), 509-540
 }

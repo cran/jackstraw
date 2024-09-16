@@ -4,6 +4,8 @@
 #' For example, membership inclusion in a given cluster can be improved by filtering low quality members.
 #' In using PCA and related methods, it helps select variables that are truly associated with given latent variables.
 #'
+#' This function requires the Bioconductor \code{qvalue} package to be installed.
+#'
 #' @param pvalue a vector of p-values.
 #' @param group a vector of group indicators (optional).
 #' If provided, PIP analysis is stratified.
@@ -26,12 +28,16 @@ pip <- function(
                 verbose = TRUE,
                 ...
                 ) {
+    # check package dependencies!
+    if ( !requireNamespace( "qvalue" ) )
+        stop( 'The Bioconductor `qvalue` package is required to use function `jackstraw::pip`, please install it manually!' )
+
     # pvalue is always mandatory
     if ( missing( pvalue ) )
         stop( '`pvalue` is required!' )
 
     m <- length(pvalue)
-    
+
     if ( is.null( pi0 ) ) {
         if (verbose)
             message("Using qvalue::pi0est to estimate pi0 values.")
@@ -46,7 +52,7 @@ pip <- function(
             prob <- vector("numeric", length = m )
             for (i in 1:k) {
                 # skip empty groups quietly
-                if ( sum(group == i) > 0 ) 
+                if ( sum(group == i) > 0 )
                     prob[group == i] <- 1 - qvalue::lfdr( pvalue[group == i], ... )
             }
         }
@@ -70,7 +76,7 @@ pip <- function(
             prob <- vector("numeric", length = m )
             for (i in 1:k) {
                 # skip empty groups quietly
-                if ( sum(group == i) > 0 ) 
+                if ( sum(group == i) > 0 )
                     prob[group == i] <- 1 - qvalue::lfdr( pvalue[group == i], pi0 = pi0[i], ... )
             }
         }

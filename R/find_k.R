@@ -36,7 +36,7 @@ find_k <- function() {
 #' \item{r}{an estimated number of significant principal components based on thresholding p-values at \code{threshold}}
 #' \item{p}{a list of p-values for significance of principal components}
 #'
-#' @references Buja A and Eyuboglu N. (1992) Remarks on parallel analysis. Multivariate Behavioral Research, 27(4), 509-540 \doi{10.1207/s15327906mbr2704_2}
+#' @references Buja A and Eyuboglu N. (1992) Remarks on parallel analysis. Multivariate Behavioral Research, 27(4), 509-540
 #' @export
 permutationPA <- function(
                           dat,

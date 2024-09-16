@@ -26,7 +26,7 @@
 #'
 #' @param dat a data matrix with \code{m} rows as variables and \code{n} columns as observations.
 #' @param r a number (a positive integer) of significant principal components. See \link{permutationPA} and other methods.
-#' @param r1 a numeric vector of principal components of interest. Choose a subset of \code{r} significant PCs to be used.
+#' @param r1 a numeric vector of the principal components that are of interest. Choose a subset of \code{r} significant PCs to be used.
 #' @param s a number (a positive integer) of ``synthetic'' null variables. Out of \code{m} variables, \code{s} variables are independently permuted.
 #' @param B a number (a positive integer) of resampling iterations. There will be a total of \code{s*B} null statistics.
 #' @param covariate a data matrix of covariates with corresponding \code{n} observations (do not include an intercept term).
@@ -58,7 +58,7 @@
 #' ## For example, set s and B for a balance between speed of the algorithm and accuracy of p-values
 #' ## out = jackstraw_pca(dat, r=1, s=10, B=1000)
 #' }
-#' 
+#'
 #' @export
 jackstraw_pca <- function(
                           dat,
@@ -85,7 +85,7 @@ jackstraw_pca <- function(
             if ( nrow( covariate ) != n )
                 stop( 'Matrix `covariate` must have `n` rows, has: ', nrow( covariate ), ', expected: ', n )
         } else {
-            if ( length( covariate ) != n ) 
+            if ( length( covariate ) != n )
                 stop( 'Vector `covariate` must have `n` elements, has: ', length( covariate ), ', expected: ', n )
         }
     }
@@ -98,7 +98,7 @@ jackstraw_pca <- function(
     if (!(r > 0 && r < n)) {
         stop("r is not in valid range between 1 and n-1.")
     }
-    
+
     if (is.null(s)) {
         s <- round(m/10)
         if (verbose)
@@ -109,7 +109,7 @@ jackstraw_pca <- function(
         if (verbose)
             message( "A number of resampling iterations (B) is not specified: B=round(m*10/s)=", B, "." )
     }
-    
+
     if (is.null(r1))
         r1 <- 1:r
     if (all(seq(r) %in% r1)) {
@@ -141,7 +141,7 @@ jackstraw_pca <- function(
 
     if ( verbose )
         cat(paste0("\nComputating null statistics (", B, " total iterations): "))
-    
+
     for (i in 1:B) {
         random.s <- sample.int( m, s )
         s.nulls <- dat[ random.s, , drop = FALSE ]
@@ -154,7 +154,7 @@ jackstraw_pca <- function(
 
         if (!is.null(r0))
             ALV.js <- svd.jackstraw.dat$v[, r0, drop = FALSE]
-        
+
         null[, i] <- FSTAT(
             dat = s.nulls,
             LV = LV.js,
@@ -167,7 +167,7 @@ jackstraw_pca <- function(
     }
 
     p.value <- empPvals( obs, null )
-    
+
     return(
         list(
             call = match.call(),

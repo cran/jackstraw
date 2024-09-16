@@ -34,7 +34,7 @@
 #' kmeans.dat <- kmeans(dat, centers=2, nstart = 10, iter.max = 100)
 #' jackstraw.out <- jackstraw_kmeans(dat, kmeans.dat)
 #' }
-#' 
+#'
 #' @export
 jackstraw_kmeans <- function(
                              dat,
@@ -68,7 +68,7 @@ jackstraw_kmeans <- function(
             if ( nrow( covariate ) != n )
                 stop( 'Matrix `covariate` must have `n` rows, has: ', nrow( covariate ), ', expected: ', n )
         } else {
-            if ( length( covariate ) != n ) 
+            if ( length( covariate ) != n )
                 stop( 'Vector `covariate` must have `n` elements, has: ', length( covariate ), ', expected: ', n )
         }
     }
@@ -83,7 +83,7 @@ jackstraw_kmeans <- function(
         if (verbose)
             message( "A number of resampling iterations (B) is not specified: B=round(m*10/s)=", B, "." )
     }
-    
+
     k <- nrow(kmeans.dat$centers)
     obs.centers <- kmeans.dat$centers
     rownames(obs.centers) <- paste0("obs",1:k)
@@ -109,7 +109,7 @@ jackstraw_kmeans <- function(
     for (j in 1:B) {
         if (verbose)
             cat(paste(j, " "))
-        
+
         jackstraw.dat <- dat
         # randomly choose s variables
         # to permute
@@ -125,14 +125,14 @@ jackstraw_kmeans <- function(
                 center = TRUE,
                 scale = FALSE
             ))
-        
+
         # re-cluster the jackstraw data
         kmeans.null <- stats::kmeans(
                                   jackstraw.dat,
                                   centers = kmeans.dat$centers,
                                   ...
                               )
-        
+
         # with stable clusters, numeric identities of clusters are typically matched, after resampling s
         if (match) {
             jck.centers <- kmeans.null$centers

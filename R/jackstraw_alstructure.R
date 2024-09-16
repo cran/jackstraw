@@ -4,6 +4,7 @@
 #'
 #' This function uses ALStructure from Cabreros and Storey (2019). A deviation \code{dev} in logistic regression
 #' (the full model with \code{r} LFs vs. the intercept-only model) is used to assess association.
+#' This function also requires the Bioconductor \code{gcatest} package to be installed.
 #'
 #' @param dat a genotype matrix with \code{m} rows as variables and \code{n} columns as observations.
 #' @param r a number of significant LFs.
@@ -25,7 +26,7 @@
 #' X
 #' # choose the number of ancestries
 #' r <- 3
-#' 
+#'
 #' # load alstructure package (install from https://github.com/StoreyLab/alstructure)
 #' library(alstructure)
 #' # define the function this way, a function of the genotype matrix only
@@ -39,7 +40,7 @@
 #' @author Neo Christopher Chung \email{nchchung@@gmail.com}
 #'
 #' @seealso  \link{jackstraw_pca} \link{jackstraw}
-#' 
+#'
 #' @export
 jackstraw_alstructure <- function(
                                   dat,
@@ -51,6 +52,10 @@ jackstraw_alstructure <- function(
                                   covariate = NULL,
                                   verbose = TRUE
                                   ) {
+    # check package dependencies!
+    if ( !requireNamespace( "gcatest" ) )
+        stop( 'The Bioconductor `gcatest` package is required to use function `jackstraw::jackstraw_alstructure`, please install it manually!' )
+
     # check mandatory data
     if ( missing( dat ) )
         stop( '`dat` is required!' )
@@ -62,7 +67,7 @@ jackstraw_alstructure <- function(
         stop( '`dat` must be a matrix!' )
     if ( !is.function( FUN ) )
         stop( '`FUN` must be a function!' )
-    
+
     # more validations of mandatory parameters
     m <- nrow(dat)
     n <- ncol(dat)
@@ -76,7 +81,7 @@ jackstraw_alstructure <- function(
             if ( nrow( covariate ) != n )
                 stop( 'Matrix `covariate` must have `n` rows, has: ', nrow( covariate ), ', expected: ', n )
         } else {
-            if ( length( covariate ) != n ) 
+            if ( length( covariate ) != n )
                 stop( 'Vector `covariate` must have `n` elements, has: ', length( covariate ), ', expected: ', n )
         }
     }
@@ -113,7 +118,7 @@ jackstraw_alstructure <- function(
     LFr1 <- LFr[, r1, drop = FALSE]
     if (r != ncol(LFr))
         stop( "The number of latent variables ", r, "is not equal to the number of column(s) provided by `FUN`" )
-    
+
     if (!is.null(r0))
         LFr0 <- LFr[, r0, drop = FALSE]
 
@@ -123,7 +128,7 @@ jackstraw_alstructure <- function(
                         LF0 = cbind(LFr0, matrix(1, n, 1), covariate),
                         LF1 = cbind(LFr, covariate)
                     )
-    
+
     # Estimate null association
     # statistics
     null <- matrix(0, nrow = s, ncol = B)
@@ -154,7 +159,7 @@ jackstraw_alstructure <- function(
     }
 
     p.value <- empPvals( obs, null )
-    
+
     return(
         list(
             call = match.call(),
